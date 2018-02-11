@@ -1,3 +1,4 @@
+<!-- Alkuperäinen
 <div class="page-header">
   <h1>Aihealueet</h1>
 </div>
@@ -37,4 +38,43 @@
     <textarea class="form-control" ng-model="newTopic.description"></textarea>
   </div>
   <button class="btn btn-success" ng-click="addTopic()">Lisää viesti</button>
+</form>
+-->
+<!-- Alla omaa koodia. Viikko 7, tehtävä 51 -->
+<div class="page-header">
+  <h1>Aihealueet</h1>
+</div>
+
+<div ng-repeat="topic in topics">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <a href="#/topics/{{topic.id}}">{{topic.name}}</a>
+            </h3>
+        </div>
+        <div class="panel-body">
+            {{topic.description}}
+        </div>
+    </div>
+</div>
+
+<h2 ng-if="userLoggedIn">Lisää oma aihealueesi</h2>
+
+<form novalidate name="topicForm">
+  <div class="form-group">
+    <label>Nimi</label>
+    <input type="text" class="form-control" ng-model="newTopic.name" name="uTopicName" id="uTopicName" required ng-minlength="4">
+    <div ng-show="topicForm.uTopicName.$invalid && topicForm.uTopicName.$dirty">
+        Anna aihealueen nimi.
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label>Kuvaus</label>
+    <textarea class="form-control" ng-model="newTopic.description" name="uTopicDescription" id="uTopicDescription" required ng-minlength="4"></textarea>
+    <div ng-show="topicForm.uTopicDescription.$invalid && topicForm.uTopicDescription.$dirty">
+        Anna aihealueen kuvaus.
+    </div>
+  </div>
+  <button class="btn btn-success" ng-click="addTopic()" ng-disabled="topicForm.$invalid" ng-if="userLoggedIn">Lisää aihealue</button>
 </form>

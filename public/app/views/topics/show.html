@@ -1,3 +1,4 @@
+<!-- Alkuperäinen
 <div class="page-header">
   <h1>Aihealueen nimi tähän</h1>
 </div>
@@ -39,4 +40,63 @@
     <textarea class="form-control"></textarea>
   </div>
   <button class="btn btn-success">Lisää viesti</button>
+</form>
+-->
+<!-- Alla omaa koodia. Viikko 7, tehtävä 51 -->
+<div class="page-header">
+  <h1>{{topic.name}}</h1> <!--Viikko 7, tehtävä 51 -->
+</div>
+
+<p>
+  {{topic.description}} <!--Viikko 7, tehtävä 51 -->
+</p>
+
+<h2>
+    <ng-pluralize count="messagesCount" offset="1"
+                  when="{'0': '0 viestiä ',
+                         '1': '1 viesti ',
+                         'one': '{{messagesCount}} viestiä ',
+                         'other': '{{messagesCount}} viestiä '}">
+    </ng-pluralize>
+</h2>
+
+<ul class="media-list" ng-repeat="message in messages">
+  <li class="media">
+    <div class="media-body">
+      <h4 class="media-heading">
+        <a href="#/messages/{{message.id}}">{{message.title}}</a>
+      </h4>
+
+      <p>
+        {{message.content}}
+      </p>
+
+      <p class="text-muted">
+        <!--Käyttäjätunnus tähän, 1.1.2015 12:00-->
+        <!--Käyttäjätunnus tähän, {{message.createdAt | date:'d.M.yyyy HH:mm'}}-->
+        {{message.User.username}}, {{message.createdAt | date:'d.M.yyyy HH:mm'}} <!-- Viikko 7, tehtävä 55 -->
+      </p>
+    </div>
+  </li>
+</ul>
+
+<h2 ng-if="userLoggedIn">Lisää oma viestisi</h2>
+
+<form novalidate name="messageForm">
+  <div class="form-group">
+    <label>Otsikko</label>
+    <input type="text" class="form-control" ng-model="newMessage.title" name="uMessageTitle" id="uMessageTitle" required ng-minlength="6">
+    <div ng-show="messageForm.uMessageTitle.$invalid && messageForm.uMessageTitle.$dirty">
+        Anna viestin otsikko.
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label>Viesti</label>
+    <textarea class="form-control" ng-model="newMessage.content" name="uMessageContent" id="uMessageContent" required ng-minlength="6"></textarea>
+    <div ng-show="messageForm.uMessageContent.$invalid && messageForm.uMessageContent.$dirty">
+        Anna viestin sisältö.
+    </div>
+  </div>
+  <button class="btn btn-success" ng-click="addMessage()" ng-disabled="messageForm.$invalid" ng-if="userLoggedIn">Lisää viesti</button>
 </form>

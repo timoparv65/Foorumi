@@ -1,3 +1,4 @@
+<!-- Alkuperäinen
 <div class="page-header">
   <h1>Viestin otsikko tähän</h1>
 </div>
@@ -32,4 +33,51 @@
     <textarea class="form-control"></textarea>
   </div>
   <button class="btn btn-success">Lisää vastaus</button>
+</form>
+-->
+<div class="page-header">
+  <h1>{{message.title}}</h1>
+</div>
+
+<p>
+  {{message.content}}
+</p>
+
+<h2>
+    <ng-pluralize count="repliesCount" offset="1"
+                  when="{'0': '0 vastausta ',
+                         '1': '1 vastaus ',
+                         'one': '{{repliesCount}} vastausta ',
+                         'other': '{{repliesCount}} vastausta '}">
+    </ng-pluralize>
+</h2>
+
+<ul class="media-list" ng-repeat="reply in replies">
+  <li class="media">
+    <div class="media-body">
+      <!--<h4 class="media-heading">Käyttäjätunnus tähän</h4>-->
+      <h4 class="media-heading">{{reply.User.username}}</h4> <!-- Viikko 7, tehtävä 55 -->
+
+      <p>
+        {{reply.content}}
+      </p>
+
+      <p class="text-muted">
+        {{reply.createdAt | date:'d.M.yyyy HH:mm'}}
+      </p>
+    </div>
+  </li>
+</ul>
+
+<h2 ng-if="userLoggedIn">Lisää oma vastauksesi</h2>
+
+<form novalidate name="replyForm">
+  <div class="form-group">
+    <label>Vastaus</label>
+    <textarea class="form-control" ng-model="newReply" name="uReplyContent" id="uReplyContent" required ng-minlength="6"></textarea>
+    <div ng-show="replyForm.uReplyContent.$invalid && replyForm.uReplyContent.$dirty">
+        Kirjoita vastaus.
+    </div>
+  </div>
+  <button class="btn btn-success" ng-click="addReply()" ng-disabled="replyForm.$invalid" ng-if="userLoggedIn">Lisää vastaus</button>
 </form>
